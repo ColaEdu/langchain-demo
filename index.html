@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF问答服务</title>
+</head>
+<body>
+    <h1>PDF问答服务</h1>
+    <form id="question-form">
+        <label for="question">请输入您的问题：</label>
+        <input type="text" id="question" name="question" required>
+        <button type="submit">提交问题</button>
+    </form>
+    <h2>答案：</h2>
+    <p id="answer"></p>
+
+    <script>
+        document.getElementById("question-form").addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const question = document.getElementById("question").value;
+            const response = await fetch("/ask_question", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ question })
+            });
+            const data = await response.json();
+            document.getElementById("answer").textContent = data.answer;
+        });
+    </script>
+</body>
+</html>
